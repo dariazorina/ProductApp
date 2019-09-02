@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hellokoding.springboot</groupId>
     <artifactId>crud-mysql-vuejs</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <!--<parent>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
-        <!--<version>2.1.1.RELEASE</version>-->
-    <!--</parent>-->
-
 
 
     <parent>
@@ -23,11 +16,31 @@
     </parent>
 
     <properties>
+        <liquibase.version>3.5.5</liquibase.version>
+        <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
+        <!--<liquibase-core.version>3.1.1</liquibase-core.version>-->
+
+        <javassist.version>3.22.0-GA</javassist.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <spring-boot.version>2.0.8.RELEASE</spring-boot.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
 
     <dependencies>
+
+        <!--<dependency>-->
+            <!--<groupId>postgresql</groupId>-->
+            <!--<artifactId>postgresql</artifactId>-->
+            <!--<version>9.1-901.jdbc4</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
@@ -41,6 +54,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>com.mattbertolini</groupId>-->
+        <!--<artifactId>liquibase-slf4j</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.1.1</version>
         </dependency>
 
         <dependency>
@@ -58,6 +82,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.liquibase.ext</groupId>-->
+        <!--<artifactId>liquibase-hibernate4</artifactId>-->
+        <!--<version>{liquibase-hibernate4.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -66,6 +96,75 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>
+                        ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                    </diffChangeLogFile>
+                    <driver>${db.driver}</driver>
+                    <url>${db.url}</url>
+                    <defaultSchemaName></defaultSchemaName>
+                    <username>${db.login}</username>
+                    <password>${db.password}</password>
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                        <version>${javassist.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate5</artifactId>
+                        <version>${liquibase-hibernate5.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>${spring-boot.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.validation</groupId>
+                        <artifactId>validation-api</artifactId>
+                        <version>${validation-api.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <properties>
+                <db.driver>com.mysql.jdbc.Driver</db.driver>
+                <db.url>jdbc:mysql://ANTON-SERVER:3306/dasha_product?useSSL=false</db.url>
+                <db.login>root</db.login>
+                <db.password>2405</db.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <!--<db.host>test-db.example.com</db.host>-->
+                <!--<db.port>3306</db.port>-->
+                <db.driver>org.postgresql.Driver</db.driver>
+                <db.url>jdbc:postgres://ANTON-SERVER:5432/postgres</db.url>
+                <db.login>postgres</db.login>
+                <db.password>2405</db.password>
+
+            </properties>
+        </profile>
+    </profiles>
+
 </project>
