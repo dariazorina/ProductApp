@@ -82,12 +82,33 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.jhipster</groupId>
+            <artifactId>jhipster-framework</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.spring.sample</groupId>
+            <artifactId>function-sample-azure</artifactId>
+            <version>1.0.0.BUILD-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.1.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>2.2.0.JENKINS-SNAPSHOT</version>
+        </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.liquibase.ext</groupId>-->
-        <!--<artifactId>liquibase-hibernate4</artifactId>-->
+        <dependency>
+        <groupId>org.liquibase.ext</groupId>
+        <artifactId>liquibase-hibernate4</artifactId>
+        <version>3.5</version>
         <!--<version>{liquibase-hibernate4.version}</version>-->
-        <!--</dependency>-->
+        </dependency>
     </dependencies>
 
     <build>
@@ -99,14 +120,14 @@
 
 
             <plugin>
+
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
+
                 <configuration>
                     <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
-                    <diffChangeLogFile>
-                        ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
-                    </diffChangeLogFile>
+                    <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>${db.driver}</driver>
                     <url>${db.url}</url>
                     <defaultSchemaName></defaultSchemaName>
@@ -115,6 +136,7 @@
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>
+
                 <dependencies>
                     <dependency>
                         <groupId>org.javassist</groupId>

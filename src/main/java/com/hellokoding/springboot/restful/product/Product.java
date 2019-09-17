@@ -1,8 +1,8 @@
 package com.hellokoding.springboot.restful.product;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+//import org.hibernate.annotations.CreationTimestamp;
+//import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
