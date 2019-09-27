@@ -17,7 +17,7 @@ public class ProductService {
     }
 
     public Optional<Product> findById(Long id) {
-        return productRespository.findById(id);
+        return null;// productRespository.findById(id);
     }
 
     public Product save(Product stock) {
@@ -25,6 +25,6 @@ public class ProductService {
     }
 
     public void deleteById(Long id) {
-        productRespository.deleteById(id);
+        //productRespository.deleteById(id);
     }
 }
